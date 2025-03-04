@@ -1,0 +1,17 @@
+{
+  "case_1": {
+    "description": "Sign Up with valid data",
+    "data": {
+      "username": "dummyTest",
+      "files": "test1.jpeg",
+      "files_meta": "[{\"filename\":\"test1.jpeg\",\"order\":0}]",
+      "dob": "2001-04-11",
+      "is_show_gender": "0",
+      "selfie_filename": "selfie/052019512329ac39e7f53999bd7956831724147883682.png",
+      "gender": "1",
+      "device_id": "postman_localhost",
+      "fcm_token": "test",
+      "join_location": "jakarta"
+    }
+  }
+}

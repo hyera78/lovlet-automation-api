@@ -1,0 +1,26 @@
+{
+  "case_1": {
+    "description": "Send OTP use valid email",
+    "data": {
+      "email": "testcowo1@yopmail.com"
+    }
+  },
+  "case_2": {
+    "description": "Send OTP use empty email",
+    "data": {
+      "email": ""
+    }
+  },
+  "case_3": {
+    "description": "Send OTP use invalid email random word",
+    "data": {
+      "email": "test"
+    }
+  },
+  "case_4": {
+    "description": "Send OTP use invalid email random word",
+    "data": {
+      "email": "&#128521;&#128521;&#128521;&#128521;"
+    }
+  }
+}

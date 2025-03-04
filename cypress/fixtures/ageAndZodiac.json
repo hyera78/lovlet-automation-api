@@ -1,0 +1,20 @@
+{
+  "case_1": {
+    "description": "Send use valid dob",
+    "data": {
+      "dob": "2000-07-18"
+    }
+  },
+  "case_2": {
+    "description": "Send use empty dob",
+    "data": {
+      "dob": ""
+    }
+  },
+  "case_3": {
+    "description": "Send use not valid dob",
+    "data": {
+      "dob": "abc"
+    }
+  }
+}

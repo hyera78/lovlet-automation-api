@@ -1,0 +1,28 @@
+{
+  "case_1": {
+    "description": "use valid refresh token dan valid device id",
+    "data": {
+      "device_id": "IOS",
+      "platform": "ios",
+      "fcm_token": "abcde"
+    }
+  },
+  "case_2": {
+    "description": "use not valid refresh token dan valid device id",
+    "data": {
+      "refresh_token": "abc",
+      "device_id": "IOS",
+      "platform": "ios",
+      "fcm_token": "abcde"
+    }
+  },
+  "case_3": {
+    "description": "use empty refresh token dan empty valid device id",
+    "data": {
+      "refresh_token": "",
+      "device_id": "",
+      "platform": "ios",
+      "fcm_token": "abcde"
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "case_1": {
+    "description": "Verify OTP with all valid inputs and status account is unregistered",
+    "data": {
+      "email": "test_lovlet_not_register@yopmail.com",
+      "device_id": "IOS",
+      "fcm_token": "test",
+      "platform": "ios"
+    }
+  },
+  "case_2": {
+    "description": "Verify OTP with valid input and have account",
+    "data": {
+      "email": "tester_lovlet@yopmail.com",
+      "device_id": "IOS",
+      "fcm_token": "test",
+      "platform": "ios"
+    }
+  },
+  "case_3": {
+    "description": "Verify OTP with empty OTP code",
+    "data": {
+      "email": "testcowo1@yopmail.com",
+      "device_id": "IOS",
+      "otp": "",
+      "fcm_token": "test",
+      "platform": "ios"
+    }
+  },
+  "case_4": {
+    "description": "Verify OTP with incorrect OTP code",
+    "data": {
+      "email": "tester4@yopmail.com",
+      "device_id": "IOS",
+      "otp": "abcdef",
+      "fcm_token": "test",
+      "platform": "ios"
+    }
+  },
+  "case_5": {
+    "description": "Verify OTP with invalid email format",
+    "data": {
+      "email": "tester",
+      "device_id": "IOS",
+      "otp": "abcdef",
+      "fcm_token": "test",
+      "platform": "ios"
+    }
+  },
+  "case_6": {
+    "description": "Verify otp with otp already verify",
+    "data": {
+      "email": "testcowo@yopmail.com",
+      "device_id": "IOS",
+      "fcm_token": "test",
+      "platform": "ios"
+    }
+  }
+}

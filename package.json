@@ -1,0 +1,13 @@
+{
+  "devDependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "cypress": "^14.0.1",
+    "cypress-file-upload": "^5.0.8",
+    "cypress-iframe": "^1.0.1",
+    "cypress-mailosaur": "^2.17.0"
+  },
+  "dependencies": {
+    "easy-yopmail": "^5.2.1"
+  }
+}
