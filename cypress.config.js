@@ -4,7 +4,7 @@ module.exports = defineConfig({
   projectId: 'lolvet',
   video: false,
   e2e: {
-    baseUrl: 'https://uat-lovlet-main-services.lookinid.com/v1',
+    baseUrl: '',
     specPattern: [
       'cypress/e2e/auth/sendOTP.cy.js',
       'cypress/e2e/auth/verifyOTP.cy.js',
