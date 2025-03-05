@@ -1,0 +1,18 @@
+{
+  "case_1": {
+    "description": "Hit API with valid data",
+    "data": {
+      "email": "tester_lovlet@yopmail.com",
+      "device_id": "IOS",
+      "platform": "ios"
+    }
+  },
+  "case_2": {
+    "description": "Hit API with not valid data",
+    "data": {
+      "email": "tester_lovlet@yopmail.com",
+      "device_id": "IOS",
+      "platform": "ios"
+    }
+  }
+}

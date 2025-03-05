@@ -162,3 +162,23 @@ Cypress.Commands.add('refreshToken', (body) => {
     },
   });
 });
+
+Cypress.Commands.add('addFCMToken', (body) => {
+  const accessToken = Cypress.env('accessToken');
+
+  if (!accessToken) {
+    throw new Error(
+      'Access token is not set. Make sure to verify OTP before calling addFCMToken.'
+    );
+  }
+  cy.request({
+    method: 'POST',
+    url: '/auth/messaging/token',
+    body: body,
+    failOnStatusCode: false,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+  });
+});
