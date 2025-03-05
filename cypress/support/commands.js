@@ -80,37 +80,62 @@ Cypress.Commands.add('uploadFile', (filePath) => {
 });
 
 Cypress.Commands.add('signUp', (signupData) => {
-  cy.fixture(`images/${signupData.files}`, 'binary').then((image) => {
-    const blob = Cypress.Blob.binaryStringToBlob(image, 'image/jpeg');
-
+  const createFormData = (data, imageBlob = null) => {
     const formData = new FormData();
 
-    formData.append('files', blob, signupData.files);
+    if (imageBlob) {
+      formData.append('files', imageBlob, data.files);
+    }
 
-    formData.append('username', signupData.username);
-    formData.append('email', signupData.email);
-    formData.append('files_meta', signupData.files_meta);
-    formData.append('dob', signupData.dob);
-    formData.append('is_show_gender', signupData.is_show_gender);
-    formData.append('selfie_filename', signupData.selfie_filename);
-    formData.append('gender', signupData.gender);
-    formData.append('device_id', signupData.device_id);
-    formData.append('fcm_token', signupData.fcm_token);
-    formData.append('join_location', signupData.join_location);
+    const fields = [
+      'username',
+      'email',
+      'files_meta',
+      'dob',
+      'is_show_gender',
+      'selfie_filename',
+      'gender',
+      'device_id',
+      'fcm_token',
+      'join_location',
+    ];
+
+    fields.forEach((field) => {
+      if (data[field] !== undefined && data[field] !== '') {
+        formData.append(field, data[field]);
+      }
+    });
 
     console.log('Isi FormData:');
     for (let pair of formData.entries()) {
       console.log(pair[0], pair[1]);
     }
 
+    return formData;
+  };
+
+  if (!signupData.files) {
+    const formData = createFormData(signupData);
+
     return cy.request({
       method: 'POST',
       url: '/auth/signup/kby',
       failOnStatusCode: false,
       body: formData,
-      headers: {
-        // 'Content-Type': 'multipart/form-data',
-      },
+      headers: {},
+    });
+  }
+
+  return cy.fixture(`images/${signupData.files}`, 'binary').then((image) => {
+    const blob = Cypress.Blob.binaryStringToBlob(image, 'image/jpeg');
+    const formData = createFormData(signupData, blob);
+
+    return cy.request({
+      method: 'POST',
+      url: '/auth/signup/kby',
+      failOnStatusCode: false,
+      body: formData,
+      headers: {},
     });
   });
 });
