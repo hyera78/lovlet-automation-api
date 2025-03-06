@@ -229,3 +229,190 @@ Cypress.Commands.add('deleteAccount', (body) => {
     },
   });
 });
+
+Cypress.Commands.add('lookingFor', () => {
+  const accessToken = Cypress.env('accessToken');
+
+  if (!accessToken) {
+    throw new Error('Access token is required');
+  }
+
+  cy.request({
+    method: 'GET',
+    url: '/user/looking_for?limit=4&offset=1',
+    failOnStatusCode: false,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+});
+
+Cypress.Commands.add('loveLanguage', () => {
+  const accessToken = Cypress.env('accessToken');
+
+  if (!accessToken) {
+    throw new Error('Access token is required');
+  }
+
+  cy.request({
+    method: 'GET',
+    url: '/user/love_language?limit=1&offset=1',
+    failOnStatusCode: false,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+});
+
+Cypress.Commands.add('interest', () => {
+  const accessToken = Cypress.env('accessToken');
+
+  if (!accessToken) {
+    throw new Error('Access token is required');
+  }
+
+  cy.request({
+    method: 'GET',
+    url: '/user/interest?limit=5&offset=6',
+    failOnStatusCode: false,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+});
+
+Cypress.Commands.add('industry', () => {
+  const accessToken = Cypress.env('accessToken');
+
+  if (!accessToken) {
+    throw new Error('Access token is required');
+  }
+
+  cy.request({
+    method: 'GET',
+    url: '/user/industry?limit=5&offset=1',
+    failOnStatusCode: false,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+});
+
+Cypress.Commands.add('mbti', () => {
+  const accessToken = Cypress.env('accessToken');
+
+  if (!accessToken) {
+    throw new Error('Access token is required');
+  }
+
+  cy.request({
+    method: 'GET',
+    url: '/user/mbti?limit=5&offset=1',
+    failOnStatusCode: false,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+});
+
+Cypress.Commands.add('pet', () => {
+  const accessToken = Cypress.env('accessToken');
+
+  if (!accessToken) {
+    throw new Error('Access token is required');
+  }
+
+  cy.request({
+    method: 'GET',
+    url: '/user/pet?limit=5&offset=1',
+    failOnStatusCode: false,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+});
+
+Cypress.Commands.add('religion', () => {
+  const accessToken = Cypress.env('accessToken');
+
+  if (!accessToken) {
+    throw new Error('Access token is required');
+  }
+
+  cy.request({
+    method: 'GET',
+    url: '/user/religion?limit=5&offset=1',
+    failOnStatusCode: false,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+});
+
+Cypress.Commands.add('sport', () => {
+  const accessToken = Cypress.env('accessToken');
+
+  if (!accessToken) {
+    throw new Error('Access token is required');
+  }
+
+  cy.request({
+    method: 'GET',
+    url: '/user/sport?limit=5&offset=1',
+    failOnStatusCode: false,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+});
+
+Cypress.Commands.add('eduLevel', () => {
+  const accessToken = Cypress.env('accessToken');
+
+  if (!accessToken) {
+    throw new Error('Access token is required');
+  }
+
+  cy.request({
+    method: 'GET',
+    url: '/user/edu_level?limit=5&offset=1',
+    failOnStatusCode: false,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+});
+
+Cypress.Commands.add('zodiac', () => {
+  const accessToken = Cypress.env('accessToken');
+
+  if (!accessToken) {
+    throw new Error('Access token is required');
+  }
+
+  cy.request({
+    method: 'GET',
+    url: '/user/zodiac?limit=5&offset=1',
+    failOnStatusCode: false,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+});
+
+Cypress.Commands.add('prefferedTimezone', () => {
+  const accessToken = Cypress.env('accessToken');
+
+  if (!accessToken) {
+    throw new Error('Access token is required');
+  }
+
+  cy.request({
+    method: 'GET',
+    url: '/user/timezone',
+    failOnStatusCode: false,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+});

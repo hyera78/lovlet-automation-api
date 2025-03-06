@@ -43,9 +43,6 @@ describe('API refresh token', () => {
             .not.empty;
           expect(data).to.have.property('refresh_token').to.be.a('string').and
             .not.empty;
-          //   expect(data)
-          //     .to.have.property('active_fcm_token_count')
-          //     .to.be.a('number');
 
           cy.wrap(data.refresh_token).as('refresh_token');
         }
@@ -56,7 +53,7 @@ describe('API refresh token', () => {
       cy.refreshToken({ refresh_token, device_id, platform, fcm_token }).then(
         (response) => {
           cy.log('Full Response:', JSON.stringify(response, null, 2));
-          console.log('Response:', response); // Jika ingin melihat di console browser
+          console.log('Response:', response);
 
           expect(response.body).to.have.property('error').to.be.false;
           expect(response.body).to.have.property('status').to.equal(1);
@@ -108,23 +105,6 @@ describe('API refresh token', () => {
             expect(photo.size).to.be.a('number');
             expect(photo.originalname).to.be.a('string');
           }
-
-          // expect(user_data.photo_profile).to.be.an('array');
-          // if (user_data.photo_profile.length > 0) {
-          //   const photo = user_data.photo_profile[0];
-
-          //   expect(photo).to.have.property('name').that.is.a('string');
-          //   expect(photo).to.have.property('url').that.includes('https://');
-          //   expect(photo).to.have.property('order').that.is.a('number');
-          //   expect(photo).to.have.property('mimetype').that.is.a('string');
-          //   expect(photo).to.have.property('size').that.is.a('number');
-          //   expect(photo).to.have.property('originalname').that.is.a('string');
-          //   expect(photo).to.have.property('similarity').that.is.a('number');
-          //   expect(photo).to.have.property('verified').that.is.a('boolean');
-          //   // expect(photo)
-          //   //   .to.have.property('meta')
-          //   //   .that.is.oneOf([null, Object(photo.meta)]);
-          // }
 
           expect(user_data).to.have.property('is_verified').to.be.an('boolean');
           expect(user_data).to.have.property('email').to.be.an('string');

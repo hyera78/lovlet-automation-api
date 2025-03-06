@@ -15,7 +15,7 @@ describe('API testing Add FCM token', () => {
       expect(response.status).to.eq(200);
     });
 
-    cy.wait(5000); // Tunggu agar OTP masuk
+    cy.wait(5000);
 
     cy.getLatestOTPFromYopmail(email.split('@')[0]);
 

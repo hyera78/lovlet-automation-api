@@ -51,7 +51,7 @@ describe('API testing Sign Up KBY', () => {
           const signupData = {
             email,
             fcm_token: fcmToken,
-            ...testData, // Menggabungkan data lainnya
+            ...testData,
           };
 
           cy.signUp(signupData).then((response) => {
