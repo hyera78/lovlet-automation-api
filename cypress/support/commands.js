@@ -511,3 +511,53 @@ Cypress.Commands.add('prefferedTimezone', () => {
     },
   });
 });
+
+Cypress.Commands.add('passiveLivenessKBY', (passiveData) => {
+  const createFormData = (data, imageBlob = null) => {
+    const formData = new FormData();
+
+    if (imageBlob) {
+      formData.append('file', imageBlob, data.file);
+    }
+
+    const fields = ['file', 'file_meta'];
+
+    fields.forEach((field) => {
+      if (data[field] !== undefined && data[field] !== '') {
+        formData.append(field, data[field]);
+      }
+    });
+
+    console.log('Isi FormData:');
+    for (let pair of formData.entries()) {
+      console.log(pair[0], pair[1]);
+    }
+
+    return formData;
+  };
+
+  if (!passiveData.file) {
+    const formData = createFormData(passiveData);
+
+    return cy.request({
+      method: 'POST',
+      url: '/external/passive_liveness/kby',
+      failOnStatusCode: false,
+      body: formData,
+      headers: {},
+    });
+  }
+
+  return cy.fixture(`images/${passiveData.file}`, 'binary').then((image) => {
+    const blob = Cypress.Blob.binaryStringToBlob(image, 'image/jpeg');
+    const formData = createFormData(passiveData, blob);
+
+    return cy.request({
+      method: 'POST',
+      url: '/external/passive_liveness/kby',
+      failOnStatusCode: false,
+      body: formData,
+      headers: {},
+    });
+  });
+});
