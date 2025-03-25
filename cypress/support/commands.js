@@ -1,13 +1,8 @@
 import easyYopmail from 'easy-yopmail';
 import 'cypress-iframe';
 import 'cypress-file-upload';
-// Add to your commands.js file
 
-// Add to your commands.js file
-
-// Function to generate random email with mail.gw domain - FIXED ASYNC HANDLING
 Cypress.Commands.add('generateRandomMailGwEmail', () => {
-  // Get the available domains first to ensure we use a valid one
   return cy
     .request({
       method: 'GET',
@@ -17,25 +12,20 @@ Cypress.Commands.add('generateRandomMailGwEmail', () => {
       expect(response.status).to.eq(200);
       const domains = response.body['hydra:member'];
 
-      // Use the first active domain
       const activeDomain =
         domains.find((domain) => domain.isActive) || domains[0];
       const domainName = activeDomain.domain;
 
-      // Generate random username
       const randomString = Math.random().toString(36).substring(2, 10);
       const email = `${randomString}@${domainName}`;
 
-      // Return the email via cy.wrap to maintain the Cypress command chain
       return cy.wrap(email);
     });
 });
 
-// Command to create a mail.gw account
 Cypress.Commands.add(
   'createMailGwAccount',
   (email, password = 'Test123456') => {
-    // The mail.gw API requires a minimum password length of 8 characters
     return cy
       .request({
         method: 'POST',
@@ -47,7 +37,6 @@ Cypress.Commands.add(
         failOnStatusCode: false,
       })
       .then((response) => {
-        // Log the response for debugging
         cy.log(`Account creation status: ${response.status}`);
         if (response.status !== 201) {
           cy.log(`Error response: ${JSON.stringify(response.body)}`);

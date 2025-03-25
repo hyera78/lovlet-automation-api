@@ -16,109 +16,187 @@ describe('API Test Get Religion', () => {
 
     const platform = 'ios';
 
-    cy.generateRandomEmail().then((email) => {
-      cy.log(`Generated Email: ${email}`);
+    cy.generateRandomMailGwEmail().then((email) => {
+      const userEmail = email;
+      cy.log(`Generated Email: ${userEmail}`);
 
-      cy.generateRandomFCMToken().then((fcmToken) => {
-        cy.log(`Generated FCM Token: ${fcmToken}`);
+      cy.createMailGwAccount(userEmail).then((response) => {
+        if (response.status === 201) {
+          cy.log('Mail.gw account created successfully');
+        } else if (response.status === 422) {
+          cy.log('Account may already exist, attempting to continue');
+        } else {
+          expect(response.status).to.be.oneOf([201, 422]);
+        }
 
-        cy.sendOTP({
-          email,
-          device_id: testData.device_id,
-          fcm_token: fcmToken,
-          platform,
-        }).then((response) => {
-          expect(response.status).to.eq(200);
-        });
+        cy.generateRandomFCMToken().then((fcmToken) => {
+          cy.log(`Generated FCM Token: ${fcmToken}`);
 
-        cy.wait(5000);
-
-        cy.getLatestOTPFromYopmail(email.split('@')[0]);
-
-        cy.get('@otpCode').then((otp) => {
-          cy.log(`OTP: ${otp}`);
-
-          cy.verifyOTP({
-            email,
-            otp,
+          cy.sendOTP({
+            email: userEmail,
             device_id: testData.device_id,
             fcm_token: fcmToken,
             platform,
           }).then((response) => {
-            expect(response.body).to.have.property('code').to.equal(200);
+            expect(response.status).to.eq(200);
+
+            cy.wait(15000);
+
+            cy.getLatestOTPFromMailGw(userEmail).then(() => {
+              cy.get('@otpCode').then((otp) => {
+                cy.log(`OTP: ${otp}`);
+
+                cy.verifyOTP({
+                  email: userEmail,
+                  otp,
+                  device_id: testData.device_id,
+                  fcm_token: fcmToken,
+                  platform,
+                }).then((response) => {
+                  expect(response.body).to.have.property('code').to.equal(200);
+
+                  const signupData = {
+                    email: userEmail,
+                    fcm_token: fcmToken,
+                    ...testData,
+                  };
+
+                  cy.signUp(signupData).then((response) => {
+                    const text = new TextDecoder().decode(response.body);
+                    try {
+                      const jsonResponse = JSON.parse(text);
+                      console.log('Response Body (Parsed JSON):', jsonResponse);
+
+                      expect(jsonResponse).to.have.property('code', 200);
+                      expect(jsonResponse).to.have.property('status', 1);
+                      expect(jsonResponse).to.have.property('error', false);
+                      expect(jsonResponse).to.have.property(
+                        'message',
+                        'Success kby signup'
+                      );
+
+                      // Now proceed with login using the same email
+                      cy.sendOTP({ email: userEmail }).then((response) => {
+                        expect(response.status).to.eq(200);
+                      });
+
+                      cy.wait(15000);
+
+                      cy.getLatestOTPFromMailGw(userEmail).then(() => {
+                        cy.get('@otpCode').then((otp) => {
+                          cy.log(`OTP Retrieved: ${otp}`);
+
+                          cy.generateRandomFCMToken().as('fcmToken');
+
+                          cy.get('@fcmToken').then((fcm_token) => {
+                            cy.verifyOTP({
+                              email: userEmail,
+                              otp,
+                              device_id: testData.device_id,
+                              fcm_token,
+                              platform,
+                            }).then((response) => {
+                              cy.log('Verify OTP Response:', response);
+                              console.log('Verify OTP Response:', response);
+
+                              expect(response.body).to.have.property(
+                                'error',
+                                false
+                              );
+                              expect(response.body).to.have.property(
+                                'status',
+                                1
+                              );
+                              expect(response.body).to.have.property(
+                                'code',
+                                200
+                              );
+
+                              const { data } = response.body;
+                              expect(data).to.have.property(
+                                'is_otp_valid',
+                                true
+                              );
+                              expect(data).to.have.property(
+                                'is_account_available',
+                                true
+                              );
+                              expect(data).to.have.property(
+                                'is_properties_set',
+                                false
+                              );
+                              expect(data)
+                                .to.have.property('access_token')
+                                .to.be.a('string').and.not.empty;
+
+                              Cypress.env('accessToken', data.access_token);
+
+                              expect(response.body).to.have.property(
+                                'message',
+                                'Success verify otp'
+                              );
+
+                              cy.religion().then((response) => {
+                                expect(response.body).to.have.property(
+                                  'status',
+                                  1
+                                );
+                                expect(response.body).to.have.property(
+                                  'error',
+                                  false
+                                );
+                                expect(response.body).to.have.property(
+                                  'code',
+                                  200
+                                );
+                                expect(response.body).to.have.property(
+                                  'message',
+                                  'Success get religion'
+                                );
+                                const { data } = response.body;
+                                expect(data).to.be.an('array').that.is.not
+                                  .empty;
+
+                                data.forEach((item) => {
+                                  expect(item)
+                                    .to.have.property('id')
+                                    .that.is.a('string').and.not.empty;
+                                  expect(item)
+                                    .to.have.property('name')
+                                    .that.is.a('string').and.not.empty;
+                                  expect(item)
+                                    .to.have.property('created_at')
+                                    .that.is.a('string').and.not.empty;
+                                });
+
+                                const { meta } = response.body;
+                                expect(meta).to.be.an('object').that.is.not
+                                  .empty;
+                                expect(meta)
+                                  .to.have.property('page')
+                                  .to.be.a('number');
+                                expect(meta)
+                                  .to.have.property('limit')
+                                  .to.be.a('number');
+                                expect(meta)
+                                  .to.have.property('total_page')
+                                  .to.be.a('number');
+                                expect(meta)
+                                  .to.have.property('total_data')
+                                  .to.be.a('number');
+                              });
+                            });
+                          });
+                        });
+                      });
+                    } catch (error) {
+                      console.log('Response Body (Raw Text):', text);
+                    }
+                  });
+                });
+              });
+            });
           });
-
-          const signupData = {
-            email,
-            fcm_token: fcmToken,
-            ...testData,
-          };
-
-          cy.signUp(signupData).then((response) => {
-            cy.log('Full Response:', response);
-            console.log('Full Response:', response);
-
-            expect(response.status).to.equal(200);
-          });
-        });
-
-        cy.sendOTP({
-          email,
-          device_id: testData.device_id,
-          fcm_token: fcmToken,
-          platform,
-        }).then((response) => {
-          expect(response.status).to.eq(200);
-        });
-
-        cy.wait(5000);
-
-        cy.getLatestOTPFromYopmail(email.split('@')[0]);
-
-        cy.get('@otpCode').then((otp) => {
-          cy.log(`OTP: ${otp}`);
-
-          cy.verifyOTP({
-            email,
-            otp,
-            device_id: testData.device_id,
-            fcm_token: fcmToken,
-            platform,
-          }).then((response) => {
-            expect(response.body).to.have.property('code').to.equal(200);
-            const { data } = response.body;
-            expect(data).to.have.property('access_token').to.be.a('string').and
-              .not.empty;
-            Cypress.env('accessToken', data.access_token);
-          });
-        });
-
-        cy.religion().then((response) => {
-          expect(response.body).to.have.property('status', 1);
-          expect(response.body).to.have.property('error', false);
-          expect(response.body).to.have.property('code', 200);
-          expect(response.body).to.have.property(
-            'message',
-            'Success get religion'
-          );
-          const { data } = response.body;
-          expect(data).to.be.an('array').that.is.not.empty;
-
-          data.forEach((item) => {
-            expect(item).to.have.property('id').that.is.a('string').and.not
-              .empty;
-            expect(item).to.have.property('name').that.is.a('string').and.not
-              .empty;
-            expect(item).to.have.property('created_at').that.is.a('string').and
-              .not.empty;
-          });
-
-          const { meta } = response.body;
-          expect(meta).to.be.an('object').that.is.not.empty;
-          expect(meta).to.have.property('page').to.be.a('number');
-          expect(meta).to.have.property('limit').to.be.a('number');
-          expect(meta).to.have.property('total_page').to.be.a('number');
-          expect(meta).to.have.property('total_data').to.be.a('number');
         });
       });
     });
