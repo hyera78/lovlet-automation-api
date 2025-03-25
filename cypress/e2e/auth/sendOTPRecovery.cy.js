@@ -51,7 +51,7 @@ describe('Test API send OTP Recovery', () => {
           const signupData = {
             email,
             fcm_token: fcmToken,
-            ...testData, // Menggabungkan data lainnya
+            ...testData,
           };
 
           cy.signUp(signupData).then((response) => {
