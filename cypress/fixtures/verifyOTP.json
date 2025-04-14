@@ -11,7 +11,7 @@
   "case_2": {
     "description": "Verify OTP with valid input and have account",
     "data": {
-      "email": "tester_lovlet@yopmail.com",
+      "email": "tester_lovlet_registered@yopmail.com",
       "device_id": "IOS",
       "fcm_token": "test",
       "platform": "ios"
