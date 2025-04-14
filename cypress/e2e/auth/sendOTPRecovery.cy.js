@@ -184,7 +184,6 @@ describe('Test API send OTP Recovery', () => {
                                 .to.have.property('expiry')
                                 .to.be.a('string');
 
-                              // Mengganti getLatestOTPFromYopmail dengan getLatestOTPFromMailGw
                               cy.getLatestOTPFromMailGw(userEmail).then(() => {
                                 cy.get('@otpCode').then((otp) => {
                                   cy.log(`OTP recovery : ${otp}`);
