@@ -601,3 +601,20 @@ Cypress.Commands.add('backtrack', () => {
     },
   });
 });
+
+Cypress.Commands.add('getUserQuota', () => {
+  const accessToken = Cypress.env('accessToken');
+
+  if (!accessToken) {
+    throw new Error('Access token is required');
+  }
+
+  cy.request({
+    method: 'GET',
+    url: '/feed/user_quota',
+    failOnStatusCode: false,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+});
