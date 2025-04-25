@@ -584,3 +584,20 @@ Cypress.Commands.add('getTheOne', () => {
     },
   });
 });
+
+Cypress.Commands.add('backtrack', () => {
+  const accessToken = Cypress.env('accessToken');
+
+  if (!accessToken) {
+    throw new Error('Access token is required');
+  }
+
+  cy.request({
+    method: 'POST',
+    url: '/feed/backtrack',
+    failOnStatusCode: false,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+});
