@@ -550,3 +550,37 @@ Cypress.Commands.add('passiveLivenessKBY', (passiveData) => {
     });
   });
 });
+
+Cypress.Commands.add('getForYou', () => {
+  const accessToken = Cypress.env('accessToken');
+
+  if (!accessToken) {
+    throw new Error('Access token is required');
+  }
+
+  cy.request({
+    method: 'GET',
+    url: '/feed/for_you?limit=20&offset=1',
+    failOnStatusCode: false,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+});
+
+Cypress.Commands.add('getTheOne', () => {
+  const accessToken = Cypress.env('accessToken');
+
+  if (!accessToken) {
+    throw new Error('Access token is required');
+  }
+
+  cy.request({
+    method: 'GET',
+    url: '/feed/the_one?limit=2&offset=1',
+    failOnStatusCode: false,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+});
