@@ -618,3 +618,21 @@ Cypress.Commands.add('getUserQuota', () => {
     },
   });
 });
+
+Cypress.Commands.add('like', (body) => {
+  const accessToken = Cypress.env('accessToken');
+
+  if (!accessToken) {
+    throw new Error('Access token is required');
+  }
+
+  cy.request({
+    method: 'POST',
+    url: '/match/like',
+    body: body,
+    failOnStatusCode: false,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+});
